@@ -1,0 +1,92 @@
+<!DOCTYPE html>
+<html>
+<head>
+	<meta charset="utf-8">
+	<meta name="viewport" content="width=device-width, initial-scale=1">
+	<title>113306023_HW6_1A2B</title>
+	<style>
+		body {
+			text-align: center;
+			margin: 20px;
+		}
+		input {
+			padding: 5px;
+		}
+		button {
+			padding: 4px 10px;
+		}
+		.history {
+			margin-top: 20px;
+			display: inline-block;
+		}
+	</style>
+</head>
+<body>
+	<h1>113306023_HW6_1A2B</h1>
+	<div>
+		<input id="userInput" type="text" placeholder="輸入 4 個不重複的數字">
+		<button onclick="myFunction()">猜!</button>
+		<p><b>遊戲紀錄:</b></p>
+	</div>
+	<div class="history" id="history"></div>
+
+	<script>
+		let numbers = [0,1,2,3,4,5,6,7,8,9];
+		let answer = [];
+		while (answer.length < 4) {
+			let index = Math.floor(Math.random() * numbers.length);
+			answer.push(numbers[index]);
+			numbers.splice(index, 1);
+		}
+		let attempts = 0;
+
+		function myFunction() {
+			const inputField = document.getElementById("userInput");
+			const input = inputField.value.trim();
+			inputField.value = "";
+
+			if (input.length !== 4 || isNaN(input)){
+				alert("請輸入4個不重複的數字！");
+				return;
+			}
+
+			const inputArray = input.split("");
+			const guess = [];
+			for (let i = 0; i < inputArray.length; i++) {
+				guess.push(Number(inputArray[i]));
+			}
+			const uniqueGuess = [];
+			for (let num of guess) {
+				if (!uniqueGuess.includes(num)) {
+					uniqueGuess.push(num);
+				}
+			}
+			if (uniqueGuess.length !== 4) {
+				alert("數字不能重複！");
+				return;
+			}
+
+			let A = 0, B = 0;
+			for (let i = 0; i < guess.length; i++) {
+				const num = guess[i];
+				if (answer[i] == num) {
+					A++;
+				} else if (answer.includes(num)) {
+					B++;
+				}
+			}
+
+			attempts++;
+			const result = "第" + attempts + "次: " + input + " ⭢ " + A + "A" + B + "B";
+
+			const historyDiv = document.getElementById("history");
+			historyDiv.innerHTML += "<p>" + result + "</p>";
+
+            if (A == 4) {
+                alert("答對了！總共嘗試了" + attempts + "次。");
+                location.reload();
+            }
+        }
+    </script>
+</body>
+</html>
